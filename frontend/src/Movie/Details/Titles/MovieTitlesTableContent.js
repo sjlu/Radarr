@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import translate from 'Utilities/String/translate';
@@ -11,7 +10,7 @@ const columns = [
   {
     name: 'altTitle',
     get label() {
-      return translate('AlternativeTitle');
+      return translate('Title');
     },
     isVisible: true
   },
@@ -38,40 +37,25 @@ class MovieTitlesTableContent extends Component {
 
   render() {
     const {
-      isFetching,
-      isPopulated,
-      error,
-      items
+      titles
     } = this.props;
 
-    const hasItems = !!items.length;
+    const hasItems = !!titles.length;
     return (
       <div>
         {
-          isFetching &&
-            <LoadingIndicator />
-        }
-
-        {
-          !isFetching && !!error &&
-            <div className={styles.blankpad}>
-              {translate('UnableToLoadAltTitle')}
-            </div>
-        }
-
-        {
-          isPopulated && !hasItems && !error &&
+          !hasItems &&
             <div className={styles.blankpad}>
               {translate('NoAltTitle')}
             </div>
         }
 
         {
-          isPopulated && hasItems && !error &&
+          hasItems &&
             <Table columns={columns}>
               <TableBody>
                 {
-                  items.reverse().map((item) => {
+                  titles.reverse().map((item) => {
                     return (
                       <MovieTitlesRow
                         key={item.id}
@@ -89,10 +73,7 @@ class MovieTitlesTableContent extends Component {
 }
 
 MovieTitlesTableContent.propTypes = {
-  isFetching: PropTypes.bool.isRequired,
-  isPopulated: PropTypes.bool.isRequired,
-  error: PropTypes.object,
-  items: PropTypes.arrayOf(PropTypes.object).isRequired
+  titles: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default MovieTitlesTableContent;

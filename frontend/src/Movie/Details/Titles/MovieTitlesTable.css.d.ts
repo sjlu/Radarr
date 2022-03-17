@@ -2,8 +2,6 @@
 // Please do not change this file!
 interface CssExports {
   'container': string;
-  'grid': string;
-  'movie': string;
 }
 export const cssExports: CssExports;
 export default cssExports;
