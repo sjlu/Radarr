@@ -5,17 +5,15 @@ import { sizes } from 'Helpers/Props';
 import createMovieQueueItemsDetailsSelector, {
   MovieQueueDetails,
 } from 'Movie/Index/createMovieQueueDetailsSelector';
-import { MovieFile } from 'MovieFile/MovieFile';
 import getStatusStyle from 'Utilities/Movie/getStatusStyle';
 import translate from 'Utilities/String/translate';
 import styles from './MovieIndexProgressBar.css';
 
 interface MovieIndexProgressBarProps {
   movieId: number;
-  movieFile: MovieFile;
   monitored: boolean;
+  movieFileCount: number;
   status: string;
-  hasFile: boolean;
   isAvailable: boolean;
   width: number;
   detailedProgressBar: boolean;
@@ -26,10 +24,9 @@ interface MovieIndexProgressBarProps {
 function MovieIndexProgressBar(props: MovieIndexProgressBarProps) {
   const {
     movieId,
-    movieFile,
     monitored,
+    movieFileCount,
     status,
-    hasFile,
     isAvailable,
     width,
     detailedProgressBar,
@@ -42,6 +39,7 @@ function MovieIndexProgressBar(props: MovieIndexProgressBarProps) {
   );
 
   const progress = 100;
+  const hasFile = movieFileCount > 0;
   const queueStatusText = queueDetails.count > 0 ? 'Downloading' : null;
   let movieStatus = status === 'released' && hasFile ? 'downloaded' : status;
 
@@ -49,10 +47,10 @@ function MovieIndexProgressBar(props: MovieIndexProgressBarProps) {
     movieStatus = 'Missing';
 
     if (hasFile) {
-      movieStatus = movieFile?.quality?.quality.name ?? 'Downloaded';
+      movieStatus = 'Downloaded';
     }
   } else if (hasFile) {
-    movieStatus = movieFile?.quality?.quality.name ?? 'Downloaded';
+    movieStatus = 'Downloaded';
   } else if (isAvailable && !hasFile) {
     movieStatus = 'Missing';
   } else {

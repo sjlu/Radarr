@@ -13,6 +13,7 @@ import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
 import MovieIndexPosterSelect from 'Movie/Index/Select/MovieIndexPosterSelect';
+import { Statistics } from 'Movie/Movie';
 import MoviePoster from 'Movie/MoviePoster';
 import { executeCommand } from 'Store/Actions/commandActions';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
@@ -58,7 +59,6 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     tmdbId,
     imdbId,
     youTubeTrailerId,
-    hasFile,
     isAvailable,
     studio,
     added,
@@ -67,13 +67,14 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     physicalRelease,
     digitalRelease,
     path,
-    movieFile,
     ratings,
-    sizeOnDisk,
+    statistics = {} as Statistics,
     certification,
     originalTitle,
     originalLanguage,
   } = movie;
+
+  const { movieFileCount, sizeOnDisk } = statistics;
 
   const dispatch = useDispatch();
   const [hasPosterError, setHasPosterError] = useState(false);
@@ -207,9 +208,8 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
 
       <MovieIndexProgressBar
         movieId={movieId}
-        movieFile={movieFile}
+        movieFileCount={movieFileCount}
         monitored={monitored}
-        hasFile={hasFile}
         isAvailable={isAvailable}
         status={status}
         width={posterWidth}
