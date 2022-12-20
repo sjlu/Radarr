@@ -23,6 +23,13 @@ const authenticationMethodOptions = [
     isDisabled: true
   },
   {
+    key: 'external',
+    get value() {
+      return translate('AuthExternal');
+    },
+    isHidden: true
+  },
+  {
     key: 'basic',
     get value() {
       return translate('AuthBasic');
