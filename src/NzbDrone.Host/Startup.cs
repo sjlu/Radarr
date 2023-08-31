@@ -61,6 +61,11 @@ namespace NzbDrone.Host
                 options.KnownProxies.Clear();
             });
 
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.Secure = CookieSecurePolicy.Always;
+            });
+
             services.AddRouting(options => options.LowercaseUrls = true);
 
             services.AddResponseCompression(options => options.EnableForHttps = true);
@@ -253,11 +258,6 @@ namespace NzbDrone.Host
             }
 
             app.UseForwardedHeaders();
-            app.UseCookiePolicy(new CookiePolicyOptions
-            {
-                Secure = CookieSecurePolicy.Always,
-                MinimumSameSitePolicy = SameSiteMode.None
-            });
             app.UseMiddleware<LoggingMiddleware>();
             app.UsePathBase(new PathString(configFileProvider.UrlBase));
             app.UseExceptionHandler(new ExceptionHandlerOptions
@@ -266,6 +266,7 @@ namespace NzbDrone.Host
                 ExceptionHandler = errorHandler.HandleException
             });
 
+            app.UseCookiePolicy();
             app.UseRouting();
             app.UseCors();
             app.UseAuthentication();
